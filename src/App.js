@@ -9,6 +9,15 @@ const App = () => {
   const addPerson = (event) => {
     event.preventDefault()
 
+    const existingPerson = persons.find(p =>
+      p.name === newName
+    )
+
+    if (existingPerson !== undefined) {
+      window.alert(`${newName} on jo luettelossa`)
+      return
+    }
+
     const createdPerson = {
       name: newName,
     }
