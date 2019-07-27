@@ -8,6 +8,40 @@ const Filter = ({ handleChange, value }) => {
     </div>
   )
 }
+
+const Persons = ({ persons }) => {
+  return (
+    persons.map(p =>
+      <div key={p.name}>
+        {p.name} {p.number}
+      </div>
+    )
+
+  )
+}
+
+const PersonForm = (props) => {
+  return (
+    <form onSubmit={props.handleSubmit}>
+      <div>
+        Nimi:
+          <input
+          onChange={props.handleNameChange} value={props.newName}
+        />
+      </div>
+      <div>
+        Numero:
+          <input
+          onChange={props.handleNumberChange} value={props.newNumber}
+        />
+      </div>
+      <div>
+        <button type="submit">Lisää</button>
+      </div>
+    </form>
+  )
+}
+
 const App = () => {
   const [persons, setPersons] = useState([
     { name: 'Arto Hellas', number: '040-123456' },
@@ -19,7 +53,7 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('')
   const [filter, setFilter] = useState('')
 
-  const addPerson = (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault()
 
     const existingPerson = persons.find(p =>
@@ -61,30 +95,17 @@ const App = () => {
       <Filter handleChange={handleFilterChange} value={filter} />
 
       <h3>lisää uusi</h3>
-      <form onSubmit={addPerson}>
-        <div>
-          Nimi:
-          <input
-            onChange={handleNameChange} value={newName}
-          />
-        </div>
-        <div>
-          Numero:
-          <input
-            onChange={handleNumberChange} value={newNumber}
-          />
-        </div>
-        <div>
-          <button type="submit">Lisää</button>
-        </div>
-      </form>
+
+      <PersonForm
+        handleNameChange={handleNameChange}
+        handleNumberChange={handleNumberChange}
+        handleSubmit={handleSubmit}
+        newName={newName}
+        newNumber={newNumber}
+      />
 
       <h2>Numerot</h2>
-      {personsToShow.map(p =>
-        <div key={p.name}>
-          {p.name} {p.number}
-        </div>
-      )}
+      <Persons persons={personsToShow} />
     </div>
   )
 
