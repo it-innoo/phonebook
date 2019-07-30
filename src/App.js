@@ -11,11 +11,15 @@ const Filter = ({ handleChange, value }) => {
   )
 }
 
-const Persons = ({ persons }) => {
+
+const Persons = ({ persons, deletePerson }) => {
   return (
     persons.map(p =>
       <div key={p.name}>
         {p.name} {p.number}
+        <button onClick={() => deletePerson(p.id)}>
+          Poista
+          </button>
       </div>
     )
 
@@ -58,6 +62,14 @@ const App = () => {
       })
   }, [])
 
+  const handleNameChange = (event) =>
+    setNewName(event.target.value)
+
+  const handleNumberChange = (event) =>
+    setNewNumber(event.target.value)
+
+  const handleFilterChange = (event) =>
+    setFilter(event.target.value)
 
   const personsToShow = filter.length === 0
     ? persons
@@ -88,17 +100,18 @@ const App = () => {
         setNewName('')
         setNewNumber('')
       })
-
   }
 
-  const handleNameChange = (event) =>
-    setNewName(event.target.value)
-
-  const handleNumberChange = (event) =>
-    setNewNumber(event.target.value)
-
-  const handleFilterChange = (event) =>
-    setFilter(event.target.value)
+  const removeName = (id) => {
+    const person = persons.find(p => p.id === id)
+    if (window.confirm(`Poistetaanko ${person.name}`)) {
+      nameService
+        .remove(id)
+        .then(() => {
+          setPersons(persons.filter(p => p.id !== id))
+        })
+    }
+  }
 
   return (
     <div>
@@ -117,10 +130,12 @@ const App = () => {
       />
 
       <h2>Numerot</h2>
-      <Persons persons={personsToShow} />
+      <Persons
+        persons={personsToShow}
+        deletePerson={removeName}
+      />
     </div>
   )
-
 }
 
 export default App;
