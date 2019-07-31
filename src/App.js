@@ -83,8 +83,21 @@ const App = () => {
       p.name === newName
     )
 
-    if (existingPerson !== undefined) {
-      window.alert(`${newName} on jo luettelossa`)
+    if (existingPerson) {
+      const ok = window.confirm(`${newName} on jo luettelossa, korvataanko vanha numero uudella`)
+
+      if (ok) {
+        nameService
+          .replace({
+            ...existingPerson,
+            number: newNumber
+          })
+          .then(replacedPerson => {
+            setPersons(persons.map(p => p.name === newName ? replacedPerson : p))
+            setNewName('')
+            setNewNumber('')
+          })
+      }
       return
     }
 
@@ -104,7 +117,7 @@ const App = () => {
 
   const removeName = (id) => {
     const person = persons.find(p => p.id === id)
-    if (window.confirm(`Poistetaanko ${person.name}`)) {
+    if (window.confirm(`Poistetaanko ${person.name} `)) {
       nameService
         .remove(id)
         .then(() => {
