@@ -104,6 +104,10 @@ const App = () => {
             setNewNumber('')
             notify(`Henkilön ${newName} numero muutettu`, 'success')
           })
+          .catch(() => {
+            setPersons(persons.filter(p => p.name !== newName))
+            notify(`Henkilö ${newName} oli jo poistettu`, 'error')
+          })
       }
       return
     }
@@ -131,6 +135,10 @@ const App = () => {
         .then(() => {
           setPersons(persons.filter(p => p.id !== id))
           notify(`Poistettu ${person.name}`)
+        })
+        .catch(() => {
+          setPersons(persons.filter(p => p.name !== newName))
+          notify(`Henkilö ${newName} oli jo poistettu`, 'error')
         })
     }
   }
