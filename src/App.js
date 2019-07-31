@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import Notification from './components/Notification'
 import nameService from './services/names'
 
 
@@ -53,6 +54,7 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filter, setFilter] = useState('')
+  const [message, setMessage] = useState({ message: null })
 
   useEffect(() => {
     nameService
@@ -71,6 +73,10 @@ const App = () => {
   const handleFilterChange = (event) =>
     setFilter(event.target.value)
 
+  const notify = (message, type = 'success') => {
+    setMessage({ message, type })
+    setTimeout(() => setMessage({ message: null }), 10000)
+  }
   const personsToShow = filter.length === 0
     ? persons
     : persons.filter(p =>
@@ -96,6 +102,7 @@ const App = () => {
             setPersons(persons.map(p => p.name === newName ? replacedPerson : p))
             setNewName('')
             setNewNumber('')
+            notify(`Henkilön ${newName} numero muutettu`, 'success')
           })
       }
       return
@@ -112,6 +119,7 @@ const App = () => {
         setPersons(persons.concat(returnedPerspn))
         setNewName('')
         setNewNumber('')
+        notify(`Lisätty ${createdPerson.name}`)
       })
   }
 
@@ -122,13 +130,16 @@ const App = () => {
         .remove(id)
         .then(() => {
           setPersons(persons.filter(p => p.id !== id))
+          notify(`Poistettu ${person.name}`)
         })
     }
   }
 
   return (
     <div>
-      <h2>Puhelinluettelo</h2>
+      <h1>Puhelinluettelo</h1>
+
+      <Notification message={message} />
 
       <Filter handleChange={handleFilterChange} value={filter} />
 

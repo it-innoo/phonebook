@@ -22,8 +22,13 @@
     },
     {
       "name": "Jukka Ahlgren",
-      "number": "040-969054",
+      "number": "041-4770369",
       "id": 5
+    },
+    {
+      "name": "Martin Fowler",
+      "number": "123456789",
+      "id": 7
     }
   ]
 }
