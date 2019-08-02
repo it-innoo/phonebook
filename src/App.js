@@ -162,11 +162,12 @@ const App = () => {
       />
 
       <h2>Numerot</h2>
+
       <Persons
         persons={personsToShow}
         deletePerson={removeName}
       />
-    </div>
+    </div >
   )
 }
 
